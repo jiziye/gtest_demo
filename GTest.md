@@ -7,11 +7,18 @@ gtest是一个跨平台的(Liunx、Mac OS X、Windows 、Cygwin 、Windows CE an
 断言常常成对出现，他们都测试同一个类或者函数，但对当前功能有着不同的效果。ASSERT_*版本的断言失败时会产生致命失败，并结束当前函数。EXPECT_*版本的断言产生非致命失败，而不会中止当前函数。通常更推荐使用EXPECT_*断言，因为他们运行一个测试中可以有不止一个的错误被报告出来。但如果在编写断言如果失败，就没有必要继续往下执行的测试时，就应该使用ASSERT_*断言。因为失败的ASSERT_*断言会立即从当前的函数返回，可能会跳过其后的一些清洁代码，也许会导致空间泄漏。
 
 ## gtest系列之TEST宏
-* TEST(test_case_name, test_name)
-* TEST_F(test_fixture,test_name) //多个测试场景需要相同数据配置的情况，用TEST_F。TEST_F test fixture，测试夹具，测试套，承担了一个注册的功能。 
+* TEST(test_case_name, test_name) 
+  	用TEST做简单测试, TEST(TestFactorial, ZeroInput) //第一个参数是测试用例名，第二个参数是测试名; 随后的测试结果将以"测试用例名.测试名"的形式给出 
+* TEST_F(test_fixture,test_name) 
+	多个测试场景需要相同数据配置的情况，用TEST_F。TEST_F test fixture，测试夹具，测试套，承担了一个注册的功能。 用TEST_F做同配置的系列测试.  
+如果需要定义测试共享的子程序.使用fixture,用TEST_F替代TEST(),允许访问对象和子程序.
+```c+
+TEST_F(test_case_name, test_name) { ... test body ...}
+```
+与TEST()相同,_F是指fixture. 在使用TEST_F()之前必须定义test fixture,否则会编译错误."`virtual outside class declaration`"
 
-TestCase：字面意思，测试用例。为一个或多个方法提供测试方法，一般是一个test。  
-TestSuite：测试集合,即一组测试。一个test suite是把多个相关测试归入一组的快捷方式。如果自己没有定义，Junit会自动提供一个test suite ,包括TestCase中的所有测试。  
+* TestCase：字面意思，测试用例。为一个或多个方法提供测试方法，一般是一个test。  
+* TestSuite：测试集合,即一组测试。一个test suite是把多个相关测试归入一组的快捷方式。如果自己没有定义，Junit会自动提供一个test suite ,包括TestCase中的所有测试。  
 TEST宏的作用是创建一个简单测试，它定义了一个测试函数，在这个函数里可以使用任何C++代码并使用提供的断言来进行检查。
 ## GTest的断言
  gtest中断言的宏可以分为两类：一类是ASSERT宏，另一类就是EXPECT宏了。
